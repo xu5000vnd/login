@@ -7,9 +7,12 @@ var user = {
     }
   },
   getToken: () => {
-    return user._data.token;
+    return user._data().token;
   },
   getEmail: () => {
-    return user._data.email;
+    return user._data().email;
+  },
+  getId: () => {
+    return user._data().id;
   }
 };

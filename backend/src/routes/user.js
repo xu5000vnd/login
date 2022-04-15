@@ -3,7 +3,7 @@ import userController from '../controllers/user.controller.js';
 
 const UserRoute = express.Router();
 
-UserRoute.get('/list', userController.list);
+UserRoute.get('/', userController.getAll);
 UserRoute.get('/:id', userController.detail);
 
 export default UserRoute;

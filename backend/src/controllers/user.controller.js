@@ -3,13 +3,14 @@ import userService from '../services/user.service.js';
 
 export default {
   // get list user
-  list: async (req, res, next) => {
+  getAll: async (req, res, next) => {
     try {
       let list = await userService.findAll();
       list = list.map(item => {
         return { id: item.id, email: item.email };
       })
       res.status(200).send({
+        status: 'ok',
         data: list
       });
     } catch (error) {
@@ -25,6 +26,7 @@ export default {
       }
 
       res.status(200).send({
+        status: 'ok',
         data: detail
       });
     } catch (error) {

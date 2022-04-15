@@ -34,7 +34,7 @@ export default {
         email: existingUser.email,
         token: userJwt
       }
-      res.status(200).send(user);
+      res.status(200).send({ status: 'ok', user });
     } catch (error) {
       next(error);
     }
