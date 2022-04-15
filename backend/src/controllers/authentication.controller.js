@@ -29,8 +29,12 @@ export default {
         JWT_KEY
       );
 
-      existingUser.token = userJwt;
-      res.status(200).send(existingUser);
+      const user = {
+        id: existingUser.id,
+        email: existingUser.email,
+        token: userJwt
+      }
+      res.status(200).send(user);
     } catch (error) {
       next(error);
     }

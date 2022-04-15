@@ -11,6 +11,12 @@ import { NotFoundError } from './common/errors';
 const app = express();
 
 app.use(cors());
+// fix error in axios
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 app.use(json({ limit: '50mb', extended: true }));
 app.use(
   cookieSession({

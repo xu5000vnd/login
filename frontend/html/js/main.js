@@ -1,19 +1,7 @@
+let url = 'http://localhost:4000/api';
 var App = {};
-
-var addRoutes = function () {
-  $NB.addRoute('/sign-up', function (params) {
-    console.log(5, 'signup');
-    validateForm.signup();
-    loadComponent[location.pathname]()
-  }, 'SignUp');
-
-  $NB.addRoute('/sign-in', function (params) {
-    console.log(10, 'login');
-    validateForm.login();
-    loadComponent[location.pathname]()
-  }, 'SignIn');
-};
-
+const SIGN_IN = '/sign-in';
+const SIGN_UP = '/sign-up';
 var validateForm = {
   login: () => {
     $('form.login-form').validate({
@@ -23,6 +11,40 @@ var validateForm = {
           email: true
         },
         password: "required"
+      },
+      submitHandler: async function (form, e) {
+        $('#login-err-msg').html('');
+        e.preventDefault();
+        let email = $(form).find('input[name="email"]').val();
+        let password = $(form).find('input[name="password"]').val();
+        let payload = { email, password };
+        const config = {
+          crossdomain: true,
+          method: 'post',
+          url: `${url}/auth/signin`,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'content-type': 'application/json'
+          },
+          data: payload
+        }
+        axios(config)
+          .then(res => {
+            // save data login to localstorage
+            let data = res.data;
+            utils.setLocalStorage('user', JSON.stringify(data));
+            action.loginSuccess();
+          })
+          .catch(error => {
+            // show errors out side
+            if (error.response) {
+              let arrError = error.response.data.errors;
+              if (arrError.length) {
+                const message = arrError.map(item => item.message);
+                $('#login-err-msg').html(message.join('<br/>'));
+              }
+            }
+          });
       }
     });
   },
@@ -45,29 +67,54 @@ var loadComponent = {
       .then(response => response.text())
       .then(text => document.getElementById('navigation').innerHTML = text);
   },
-  "/sign-in": () => {
+  headerAfterLogin: () => {
+    fetch('components/header-after-login.html')
+      .then(response => response.text())
+      .then(text => document.getElementById('navigation').innerHTML = text);
+  },
+  [SIGN_IN]: () => {
     fetch('components/sign-in.html')
       .then(response => response.text())
-      .then(text => document.getElementById('main-content').innerHTML = text);
+      .then(text => {
+        document.getElementById('main-content').innerHTML = text
+        validateForm.login();
+      });
   },
-  "/sign-up": () => {
+  [SIGN_UP]: () => {
     fetch('components/sign-up.html')
       .then(response => response.text())
-      .then(text => document.getElementById('main-content').innerHTML = text);
+      .then(text => {
+        document.getElementById('main-content').innerHTML = text
+        validateForm.signup();
+      });
   }
-}
-
-App.navigateTo = function (pageUrl) {
-  $NB.navigateTo(pageUrl);
 };
 
+var addRoutes = function () {
+  $NB.addRoute(SIGN_UP, function (params) {
+  }, 'SignUp');
+
+  $NB.addRoute(SIGN_IN, function (params) {
+  }, 'SignIn');
+};
+
+App.navigateTo = function (pageUrl, cbDone) {
+  $NB.navigateTo(pageUrl, cbDone);
+};
+App.loadComponent = loadComponent;
 App.init = function () {
   addRoutes();
-  $NB.loadController(location.pathname);
-
-  // load header
   loadComponent.header();
-  // load content
-  loadComponent[location.pathname]();
+  if (location.pathname == '/') {
+    $NB.loadController(SIGN_IN, loadComponent[SIGN_IN]);
+  } else {
+    $NB.loadController(location.pathname, loadComponent[location.pathname]);
+  }
 };
 
+App.logout = () => {
+  // clear everything
+  utils.setLocalStorage('user', {});
+  loadComponent.header();
+  loadComponent[SIGN_IN]();
+}

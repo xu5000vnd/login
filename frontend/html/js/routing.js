@@ -44,7 +44,7 @@
     //:     /:page/:pageid 
     //:     /home/3434434
     //values will be page=>home and pageid=>3434434
-    $M.loadController = function (urlToParse) {
+    $M.loadController = function (urlToParse, cbDone) {
         if ($M.currentPage !== urlToParse) {
             $M.previousPage = $M.currentPage;
             $M.currentPage = urlToParse;
@@ -59,9 +59,13 @@
                     if (_params) {
                         _params.Title = routeItem.Title;
                         isRouteFound += 1;
+                        routeItem.Fn.call(null, _params);
                     }
                 }
-                routeItem.Fn.call(null, _params);
+            }
+            // call back function
+            if (typeof cbDone == 'function') {
+                cbDone();
             }
         } else {
             // console.log('you are on same page dude!!!!');
@@ -71,9 +75,9 @@
 
     //uses browsers pushSate functionality to navigate from one page to another
     //and loads respective controller to execute
-    $M.navigateTo = function (navigateTo) {
+    $M.navigateTo = function (navigateTo, cbDone) {
         window.history.pushState(null, null, navigateTo);
-        $M.loadController(navigateTo);
+        $M.loadController(navigateTo, cbDone);
     };
 
     //will add 'url' and 'function' to routing list 
