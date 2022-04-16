@@ -1,7 +1,24 @@
 .error {
-  color    : red;
+  color: red;
 }
 
 .success {
-  color    : green;
+  color: green;
+}
+
+.transition-fade {
+  opacity            : 0;
+  transition         : 0.5s;
+  transform          : translateX(-100%);
+  transform-origin   : left;
+}
+
+body.is-animating .transition-fade {
+  opacity  : 1;
+  transform: translateX(0);
+}
+
+body.is-leaving .transition-fade {
+  opacity  : 0;
+  transform: translateX(-100%);
 }

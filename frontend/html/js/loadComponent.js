@@ -1,3 +1,17 @@
+function animation(loadContent) {
+  $('body').removeClass('is-animating');
+  // leaving
+  $('body').addClass('is-leaving');
+
+  // animating
+  setTimeout(() => {
+    $('body').removeClass('is-leaving');
+    $('body').addClass('is-animating');
+    // load content 
+    loadContent();
+  }, 300)
+};
+
 var loadComponent = {
   header: () => {
     fetch('components/header.html')
@@ -22,16 +36,20 @@ var loadComponent = {
     fetch('components/sign-in.html')
       .then(response => response.text())
       .then(text => {
-        document.getElementById('main-content').innerHTML = text;
-        validateForm.login();
+        animation(function () {
+          document.getElementById('main-content').innerHTML = text;
+          validateForm.login();
+        });
       });
   },
   [SIGN_UP]: () => {
     fetch('components/sign-up.html')
       .then(response => response.text())
       .then(text => {
-        document.getElementById('main-content').innerHTML = text;
-        validateForm.signup();
+        animation(function () {
+          document.getElementById('main-content').innerHTML = text;
+          validateForm.signup();
+        });
       });
   },
   [LIST_USER]: () => {
@@ -40,8 +58,10 @@ var loadComponent = {
       .then(text => {
         // check login
         if (user.getId()) {
-          document.getElementById('main-content').innerHTML = text;
-          action.fetchListUser();
+          animation(function () {
+            document.getElementById('main-content').innerHTML = text;
+            action.fetchListUser();
+          });
         } else {
           loadComponent[SIGN_IN]();
         }
