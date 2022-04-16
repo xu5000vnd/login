@@ -1,15 +1,14 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: deploy-apidoc
 
 # Controls when the workflow will run
 on:
-  pull_request:
+  push:
+    branches:
+    - main
     paths:
     - 'apidoc/**'
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -25,4 +24,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: cd apidoc && npm install && npm run apidoc
+        run: cd apidoc && docker build -t horison92/apidoc .
