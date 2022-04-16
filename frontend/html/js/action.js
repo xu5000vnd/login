@@ -100,6 +100,24 @@ var action = {
   },
 
   logout: () => {
+    // clear session in backend
+    const config = {
+      crossdomain: true,
+      method: 'post',
+      url: `${url}/auth/logout`,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'content-type': 'application/json'
+      },
+      data: payload
+    }
+    axios(config)
+      .then(res => {
+        // do some stuff
+      })
+      .catch(error => {
+      });
+
     // clear everything
     utils.setLocalStorage('user', {});
     loadComponent.header();

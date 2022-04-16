@@ -20,7 +20,7 @@ POST http://localhost:4000/api/auth/logout HTTP/1.1
 content-type: application/json
 
 ##### List User
-GET http://localhost:4000/api/user/list HTTP/1.1
+GET http://localhost:4000/api/user HTTP/1.1
 content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhdmNjQGdtYWlsLmNvbSIsImlhdCI6MTY0OTc3Njc2MX0.2oAMvQTZRGY4DHKEOaw6NKNLdcZ36tsGCVivYWFfxtw
 
