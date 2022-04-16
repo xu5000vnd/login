@@ -18,11 +18,11 @@ App.init = function () {
   // check login
   if (user.getId()) {
     loadComponent.headerAfterLogin();
-    $NB.loadController(LIST_USER, loadComponent[LIST_USER]);
+    App.navigateTo(LIST_USER, loadComponent[LIST_USER])
   } else {
     loadComponent.header();
     if (location.pathname == '/') {
-      $NB.loadController(SIGN_IN, loadComponent[SIGN_IN]);
+      App.navigateTo(SIGN_IN, loadComponent[SIGN_IN])
     } else {
       $NB.loadController(location.pathname, loadComponent[location.pathname]);
     }

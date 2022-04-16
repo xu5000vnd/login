@@ -22,7 +22,19 @@ var validateForm = {
           required: true,
           email: true
         },
-        password: "required"
+        password: {
+          required: true,
+          minlength: 6
+        },
+        repeatpassword: {
+          required: true,
+          equalTo: '#password'
+        }
+      },
+      submitHandler: async function (form, e) {
+        e.preventDefault();
+        $('#signup-err-msg').html('');
+        action.signup(form);
       }
     });
   }

@@ -9,9 +9,10 @@ var loadComponent = {
       .then(response => response.text())
       .then(text => {
         // check login
-        console.log(12, user.getId())
         if (user.getId()) {
           document.getElementById('navigation').innerHTML = text;
+          // load email to header
+          $('#email-user').html(user.getEmail());
         } else {
           loadComponent.header();
         }

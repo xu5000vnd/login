@@ -30,9 +30,7 @@ var action = {
   // after login success
   loginSuccess: () => {
     loadComponent.headerAfterLogin();
-    loadComponent.listUser();
-    // load email to header
-    $('#email-user').html(user.getEmail());
+    App.navigateTo(LIST_USER, loadComponent[LIST_USER])
   },
 
   // handle error
@@ -45,6 +43,34 @@ var action = {
         $(id).html(message.join('<br/>'));
       }
     }
+  },
+
+  signup: (form) => {
+    let email = $(form).find('input[name="email"]').val();
+    let password = $(form).find('input[name="password"]').val();
+    let payload = { email, password };
+    const config = {
+      crossdomain: true,
+      method: 'post',
+      url: `${url}/auth/signup`,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'content-type': 'application/json'
+      },
+      data: payload
+    }
+    axios(config)
+      .then(res => {
+        let data = res.data;
+        if (data.status == 'ok') {
+          $('#signup-success-msg').html(data.message);
+          // reset form
+          $(form).trigger("reset");
+        }
+      })
+      .catch(error => {
+        action.handleError(error, '#signup-err-msg');
+      });
   },
 
   // fetch list user
