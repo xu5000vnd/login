@@ -4,5 +4,6 @@ WORKDIR /user/app
 COPY ./package.json ./
 RUN npm install
 COPY ./ ./
-
-CMD ["npm","run","apidoc"]
+RUN npm run apidoc
+COPY ./ ./
+CMD ["npm","start"]
