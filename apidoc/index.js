@@ -8,5 +8,5 @@ app.get('/*', (req, res) => {
 });
 
 app.listen(4002, () => {
-  console.log('Listening port 4001');
+  console.log('Listening port 4002');
 });
