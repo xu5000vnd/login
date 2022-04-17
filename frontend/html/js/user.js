@@ -1,7 +1,7 @@
 var user = {
   _data: () => {
     try {
-      return JSON.parse(utils.getLocalStorage('user'));
+      return JSON.parse(utils.getLocalStorage('user')) || {};
     } catch (error) {
       return {};
     }
