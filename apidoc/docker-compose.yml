@@ -4,3 +4,5 @@ services:
     build: .
     ports:
       - "4002:4002"
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
