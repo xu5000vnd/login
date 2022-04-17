@@ -108,8 +108,7 @@ var action = {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'content-type': 'application/json'
-      },
-      data: payload
+      }
     }
     axios(config)
       .then(res => {
